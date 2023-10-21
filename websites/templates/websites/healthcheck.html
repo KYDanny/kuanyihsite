@@ -1,0 +1,191 @@
+{% extends "websites/base.html" %}
+{% load static %}
+{% block title %}健康檢查專區{% endblock %}
+{% block head %}
+<h2>一般體格檢查個人病史問卷調查表</h2>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<script src="{% static 'websites/formating.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<form action="/healthcheck/" method="post">
+    {% csrf_token %}
+    <h3>一、基本資料</h3>
+    <ol class="form-list">
+        <div class="form-list-item">
+            <li>{{form.name.label_tag}}{{form.name}}</li>
+            <li>{{form.gender.label_tag}}{{form.gender}}</li>
+        </div>
+        <div class="form-list-item">
+            <li>{{form.security_number.label_tag }}{{form.security_number}}</li>
+            {% if form.security_number.errors %}
+            <ul class="errorlist">
+                {% for error in form.security_number.errors %}
+                <li>{{error}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <li>{{form.birthday.label_tag}}{{form.birthday}}</li>
+        </div>
+        <div class="form-list-item">
+            <li>{{form.hire_date.label_tag}}{{form.hire_date}}</li>
+            {% if form.hire_date.errors %}
+            <ul class="errorlist">
+                {% for error in form.hire_date.errors %}
+                <li>{{error}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <li>{{form.check_date.label_tag}}{{form.check_date}}</li>
+            {% if form.check_date.errors %}
+            <ul class="errorlist">
+                {% for error in form.check_date.errors %}
+                <li>{{error}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </ol>
+    <h3>二、工作經歷</h3>
+    <ol class="form-list">
+        <div class="form-list-item">
+            <li>{{form.formerJob.label_tag}}{{form.formerJob}}
+                {{form.formerJob_start.label_tag}}{{form.formerJob_start}}
+
+                {% if form.formerJob_start.errors %}
+                <ul class="errorlist">
+                    {% for error in form.formerJob_start.errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                {{form.formerJob_end.label_tag}}{{form.formerJob_end}}
+
+                {% if form.formerJob_end.errors %}
+                <ul class="errorlist">
+                    {% for error in form.formerJob_end.errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </li>
+        </div>
+        <div class="form-list-item">
+            <li>{{form.currentJob.label_tag}}{{form.currentJob}}
+                {{form.currentJob_start.label_tag}}{{form.currentJob_start}}
+                
+                {% if form.currentJob_start.errors %}
+                <ul class="errorlist">
+                    {% for error in form.currentJob_start.errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {{form.currentJob_end.label_tag}}{{form.currentJob_end}}
+                            
+                {% if form.currentJob_end.errors %}
+                <ul class="errorlist">
+                    {% for error in form.currentJob_end.errors %}
+                    <li>{{error}}</li>
+                    {% endfor %}
+                </ul>
+
+                {% endif %}
+            </li>
+        </div>
+        <div class="form-list-item">
+            <li>{{form.workHourLastMonth.label_tag}}{{form.workHourLastMonth}}小時；
+                {{form.workHourLastSixMonth.label_tag}}{{form.workHourLastSixMonth}}小時</li>
+        </div>
+    </ol>
+    <h3>三、檢查時期（原因）</h3>
+    <ol>
+        <div>
+            <p>{{form.checkReason}}</p>
+        </div>
+    </ol>
+    <h3>四、既往病史</h3>
+    <ol class="form-list">
+        <div class="checkbox-container">
+            {% for chronical in form.chronicals %}
+            <p>{{chronical}}
+                {% if forloop.counter == 4 %}
+                {{form.cancer}}
+                {% endif %}
+            </p>
+            {% endfor %}
+            <p>請將以上點選之醫療病史於本欄中予以詳述：</p>
+            <p>{{form.detail}}</p>
+            <p>以上所勾選之疾病是否就醫，經醫師診斷：{{form.diagnosed}}&nbsp&nbsp{{form.doctor.label_tag}}{{form.doctor}}</p>
+            <p>如家族中直系血親有以上所列之醫療病史，煩請於本欄中予以詳述：</p>
+            <p>{{form.familyHistory}}</p>
+        </div>
+    </ol>
+    <h3>五、生活習慣</h3>
+    <ol>
+        <div>
+            <li>請問您過去一個月內是否有吸菸？</li>
+            {% for smoke in form.smokeHabbit %}
+            <p>{{smoke}}
+                {% if forloop.counter == 3 %}
+                ，平均每天吸&nbsp;&nbsp;{{form.smokequantity}}&nbsp;&nbsp;支，已吸菸&nbsp;&nbsp;{{form.smokeyears}}&nbsp;&nbsp;年
+                {% endif %}
+                {% if forloop.counter == 4 %}
+                ，戒了&nbsp;&nbsp;{{form.smokequityear}}年{{form.smikequitmonth}}月。
+                {% endif %}
+            </p>
+            {% endfor %}
+        </div>
+        <div>
+            <li>請問您最近六個月內是否有嚼食檳榔？</li>
+            {% for chew in form.betelnutHabbit %}
+            <p>{{chew}}
+                {% if forloop.counter == 3 %}
+                ，平均每天嚼&nbsp;&nbsp;{{form.chewquantity}}&nbsp;&nbsp;顆，已嚼&nbsp;&nbsp;{{form.chewyears}}&nbsp;&nbsp;年
+                {% endif %}
+                {% if forloop.counter == 4 %}
+                ，戒了&nbsp;&nbsp;{{form.chewquityear}}年{{form.chewquitmonth}}月。
+                {% endif %}
+            </p>
+            {% endfor %}
+        </div>
+        <div>
+            <li>請問您過去一個月內是否有喝酒？</li>
+            {% for drink in form.drinkingHabbit %}
+            <p>{{drink}}
+                {% if forloop.counter == 3 %}
+                ，平均每週喝&nbsp;&nbsp;{{form.drinktimes}}&nbsp;&nbsp;次，最常喝&nbsp;&nbsp;{{form.wine}}&nbsp;&nbsp;酒，每次{{form.drinkquantity}}瓶
+                {% endif %}
+                {% if forloop.counter == 4 %}
+                ，戒了&nbsp;&nbsp;{{form.drinkquityear}}年{{form.drinkquitmonth}}月。
+                {% endif %}
+            </p>
+            {% endfor %}
+        </div>
+        <div>
+            <li>請問您於工作日期間，平均每天睡眠時間為：{{form.sleeptime}}&nbsp;&nbsp;小時</li>
+        </div>
+    </ol>
+    <h3>六、自覺症狀：您最近三個月是否有下列症狀：（請在適當項目前打勾）</h3>
+    <p>{% for symptom in form.selfSymptoms %}
+        {{ symptom }}
+        {% if forloop.counter == 23 %}
+        {{form.othersymptoms}}
+        {% endif %}
+        {% endfor %}
+
+    </p>
+
+    <button type="submit" name="submit">提交</button>
+    <button type="reset" name="reset">重填</button>
+
+</form>
+
+{% include "websites/disclaimer.html" %}
+<script>
+    console.log("If you see this, inline JavaScript is working.");
+</script>
+
+{% endblock %}

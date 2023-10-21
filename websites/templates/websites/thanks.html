@@ -1,0 +1,107 @@
+{% extends "websites/base.html" %}
+{% block title %}感謝您寶貴的時間{% endblock %}
+{% block header %}感謝您寶貴的時間{% endblock %}
+{% block brief %}您所填寫的資料如下：{% endblock %}
+{% block content %}
+<h3>一、基本資料</h3>
+    <ol>
+        <div>
+            <li>姓名：{{showResult.name}}</li>
+            <li>性別：{{showResult.gender}}</li>
+        </div>
+        <div>
+            <li>身分證字號：{{showResult.security_number}}</li>          
+            <li>出生日期：{{showResult.birthday}}</li>
+        </div>
+        <div>
+            <li>受僱日期：{{showResult.hire_date}}</li>
+            <li>檢查日期：{{showResult.check_date}}</li>
+        </div>
+    </ol>
+<h3>二、工作經歷</h3>
+<ol>
+    <div>
+        <li>
+            曾經從事：{{showResult.formerJob}}，起始日期：{{showResult.formerJob_start}}，結束日期：{{showResult.formerJob_end}}
+        </li>
+    
+        <li>
+            目前從事：{{showResult.currentJob}}，起始日期：{{showResult.currentJob_start}}，結束日期：{{showResult.currentJob_end}}                  
+        </li>
+    
+        <li>
+            過去1個月，平均每週工時為：{{showResult.workHourLastMonth}}小時； 過去6個月，平均每週工時為：{{showResult.workHourLastSixMonth}}小時
+        </li>
+    </div>
+</ol>
+<h3>三、檢查時期（原因）</h3>
+<ol>
+    <div>
+        <p>{{showResult.checkReason}}</p>
+    </div>
+</ol>
+<h3>四、既往病史</h3>
+<ol>
+    <div>
+        {% for chronical in showResult.chronicals.all %}
+        <p>{{chronical}}
+            {% if chronical.diseases == "癌症" %}
+            ：{{showResult.cancer}}
+            {% endif %}
+        </p>
+        {% endfor %}
+        <p style="font-weight: bold">請將以上點選之醫療病史於本欄中予以詳述：</p>
+        <p>{{showResult.detail}}</p>
+        <p>以上所勾選之疾病是否就醫，經醫師診斷：{{showResult.diagnosed}}&nbsp&nbsp，醫師姓名：{{showResult.doctor}}</p>
+        <p style="font-weight: bold">如家族中直系血親有以上所列之醫療病史，煩請於本欄中予以詳述：</p>
+        <p>{{showResult.familyHistory}}</p>
+    </div>
+</ol>
+<h3>五、生活習慣</h3>
+    <ol>
+        <div>
+            <li>請問您過去一個月內是否有吸菸？</li>
+            <p>{{ showResult.smokeHabbit }}</p>
+            {% if showResult.smokeHabbit.smoke == "（幾乎）每天吸" %}
+            <p>平均每天吸&nbsp;&nbsp;{{ showResult.smokequantity }}&nbsp;&nbsp;支，已吸菸&nbsp;&nbsp;{{showResult.smokeyears}}&nbsp;&nbsp;年
+            {% endif %}
+            {% if showResult.smokeHabbit.smoke == "已經戒菸" %}
+                <p>戒了&nbsp;&nbsp;{{ showResult.smokequityear }}年{{ showResult.smikequitmonth }}月。</p>
+            {% endif %}
+        </div>
+        <div>
+            <li>請問您最近六個月內是否有嚼食檳榔？</li>
+            <p>{{ showResult.betelnutHabbit }}</p>
+            {% if showResult.betelnutHabbit.chew == "（幾乎）每天嚼" %}
+            <p>平均每天嚼&nbsp;&nbsp;{{showResult.chewquantity}}&nbsp;&nbsp;顆，已嚼&nbsp;&nbsp;{{showResult.chewyears}}&nbsp;&nbsp;年</p>
+            {% endif %}
+            {% if showResult.betelnutHabbit.chew == "已經戒食" %}
+            <p>戒了&nbsp;&nbsp;{{showResult.chewquityear}}年{{showResult.chewquitmonth}}月。</p>
+            {% endif %}
+        </div>
+        <div>
+            <li>請問您過去一個月內是否有喝酒？</li>
+            <p>{{ showResult.drinkingHabbit }}</p>
+            {% if showResult.drinkingHabbit.drink == "（幾乎）每天喝" %}
+            <p>平均每週喝&nbsp;&nbsp;{{showResult.drinktimes}}&nbsp;&nbsp;次，最常喝&nbsp;&nbsp;{{showResult.wine}}&nbsp;&nbsp;酒，每次{{showResult.drinkquantity}}瓶</p>
+            {% endif %}
+            {% if showResult.drinkingHabbit.drink == "已經戒酒" %}
+            <p>戒了&nbsp;&nbsp;{{showResult.drinkquityear}}年{{showResult.drinkquitmonth}}月。</p>
+            {% endif %}
+            
+        </div>
+        <div>
+            <li>請問您於工作日期間，平均每天睡眠時間為：{{showResult.sleeptime}}&nbsp;&nbsp;小時</li>
+        </div>
+    </ol>
+<h3>六、自覺症狀：您最近三個月是否有下列症狀：（請在適當項目前打勾）</h3>
+{% for uncomfort in showResult.selfSymptoms.all %}
+<p>{{uncomfort}}
+{% if uncomfort.symptom == "其他症狀" %}:
+{{showResult.othersymptoms}}</p>
+
+{% endif %}
+{% endfor %}
+<a href="/">回首頁</a>
+
+{% endblock %}

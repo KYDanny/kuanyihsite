@@ -1,0 +1,8 @@
+{% extends 'websites/base.html' %}
+{% block title %}晚餐投票結果{% endblock %}
+{% block content %}
+{% for option in options %} 
+<p><strong style="font-size: 16px">{{option.name}}: {{option.votes}}票</strong></p>
+{% endfor %}
+<a href="/">回首頁</a>
+{% endblock %}

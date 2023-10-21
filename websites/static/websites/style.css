@@ -1,0 +1,14 @@
+/* style.css */
+.form-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-list-item {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.form-list-item li:first-child {
+    margin-right: 50px;
+}

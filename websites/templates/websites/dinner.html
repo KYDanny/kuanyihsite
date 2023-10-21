@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting on dinner</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <h1>請問大家今天晚餐要吃什麼？</h1>
+    <form id="dinnerForm">
+        <div id="options"></div>
+        <button type="submit">投票</button>
+    </form>
+    <div id="results"></div>
+    <script>
+
+        $.ajax({
+            url: '/api/dinner_options/',  
+            method: "GET",
+            success: function (response) {
+                // Populate options in the form
+                let optionsHTML = '';
+                response.forEach(function (option) {
+                    optionsHTML += `<input type="radio" name="option" value="${option.id}">${option.name}<br>`;
+                });
+                $("#options").html(optionsHTML);
+            },
+            error: function (error) {
+                alert("Something went wrong while fetching options!");
+            }
+        });
+
+        $("#dinnerForm").on("submit", function (event) {
+            event.preventDefault();
+            let selectedOption = $("input[name='option']:checked").val();
+
+            // AJAX to submit vote
+            $.ajax({
+                url: `/api/dinner_options/${selectedOption}/vote/`,  // Replace with your API endpoint to vote
+                method: "POST",
+                headers: { 'X-CSRFToken': '{{csrf_token}}' },
+                success: function (response) {
+                    window.location.href = "/dinner_results/";
+                },
+
+                error: function (error) {
+                    alert("Something went wrong while submitting your vote!");
+                }
+            });
+        });
+
+    </script>
+</body>

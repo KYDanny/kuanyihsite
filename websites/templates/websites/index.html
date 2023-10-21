@@ -1,0 +1,53 @@
+{% extends "websites/base.html" %}
+{% load static %}
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'websites/styles.css' %}">
+    {% endblock %}
+{% block title %}I'm Danny Chiou{% endblock %}
+{% block personalimage %}
+    <img src="{% static 'websites/images/邱冠諭.jpg' %}" alt="My Photo" width="300px">
+{% endblock %}
+
+{% block header %}
+{% for info in myinfo %}
+    <h1>---{{ info.header }}---</h1>
+{% endfor %}
+{% endblock %}
+
+{% block brief %}
+{% for info in myinfo %}
+    {{ info.briefIntro }}
+{% endfor %}
+{% endblock %} 
+
+
+{% block companyimage %}
+    <p><img src="{% static 'websites/images/憲兵.jpg' %}" alt="image" width="300"></p>
+{% endblock %}
+
+{% block company %}
+{% for info in myinfo %}
+<p>{{ info.companyName }}</p>
+{% endfor %}
+{% endblock %}
+
+{% block workingtimespan %}
+{% for info in myinfo %}
+<p>{{ info.spanOfDate }}</p>
+{% endfor %}
+{% endblock %}
+
+
+{% block content %}
+{% for info in myinfo %}
+<p>{{ info.workIntro }}</p>
+{% endfor %}
+<div>
+    <br><br>
+<p>以下是我的作品</p>
+<a href="healthcheck/">健康檢查問卷</a><br>
+<a href="dinner_options/">投票網頁</a>
+</div>
+{% endblock %}
+
+

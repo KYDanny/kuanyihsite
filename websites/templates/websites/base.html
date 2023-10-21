@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'websites/basestyles.css' %}">
+    {% block extra_head %}{% endblock %}
+
+</head>
+
+<body>
+    <div id="personal-image-block">
+    {% block personalimage %}{% endblock %}
+    </div>
+    <div class="container">
+    <header>
+        <h1>{% block header %}{% endblock %}</h1>
+        <p>{% block brief %}{% endblock %}</p>
+    </header>
+        <p>{% block companyimage %}{% endblock %}</p>
+        <h2><strong>{% block company %}{% endblock %}</strong></h2>
+        <p>{% block workingtimespan %}{% endblock %}</p>
+        <p>{% block content %}{% endblock %}</p>
+        <br><br>
+    <footer>
+        {% include "websites/footer.html" %}
+    </footer>
+    </div>
+
+
+</body>
+
+</html>

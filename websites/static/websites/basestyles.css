@@ -1,0 +1,30 @@
+body {
+    margin: 0 auto;
+}
+
+#personal-image-block {
+    margin-top: 20px;
+    text-align: center;
+    /* 設置上邊距為20像素 */
+}
+
+.container {
+    max-width: 2000px;
+    /* 設置container的寬度 */
+    margin: 0 auto;
+    text-align: left;
+    font-size: 20pt;
+    /* container內的對齊方式 */
+}
+
+#ex {
+    margin: 0 auto;
+    text-align: center;
+}
+
+div,
+p,
+h1 {
+    margin: 0 auto;
+    text-align: left;
+}

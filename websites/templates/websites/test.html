@@ -1,0 +1,47 @@
+<body>
+    <form id="dinnerForm">
+        <div id="options"></div>
+        <button type="submit">投票</button>
+    </form>
+    <div id="results"></div>
+    <script>
+        // AJAX to fetch options
+        $.ajax({
+            url: 'api/dinner_options/',  // Replace with your API endpoint to list all options
+            method: "GET",
+            success: function (response) {
+                // Populate options in the form
+                let optionsHTML = '';
+                response.forEach(function (option) {
+                    optionsHTML += `<input type="radio" name="option" value="${option.id}">${option.name}<br>`;
+                });
+                $("#options").html(optionsHTML);
+            },
+            error: function (error) {
+                alert("Something went wrong while fetching options!");
+            }
+        });
+
+        $("#dinnerForm").on("submit", function (event) {
+            event.preventDefault();
+            let selectedOption = $("input[name='option']:checked").val();
+
+            // AJAX to submit vote
+            $.ajax({
+                url: `api/dinner_options/${selectedOption}/vote/`,  // Replace with your API endpoint to vote
+                method: "POST",
+                success: function (response) {
+                    // Show the updated votes
+                    let resultsHTML = '';
+                    response.current_votes.forEach(function (option) {
+                        resultsHTML += `${option.name}: ${option.votes}<br>`;
+                    });
+                    $("#results").html(resultsHTML);
+                },
+                error: function (error) {
+                    alert("Something went wrong while submitting your vote!");
+                }
+            });
+        });
+    </script>
+</body>
